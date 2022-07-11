@@ -1,6 +1,5 @@
 'use strict';
 
-
 /* Elementos que usamos en el HTML */
 const newFormElement = document.querySelector('.js-new-form');
 const listElement = document.querySelector('.js-list');
@@ -13,7 +12,6 @@ const inputName = document.querySelector('.js-input-name');
 const linkNewFormElememt = document.querySelector('.js-button-new-form');
 const labelMesageError = document.querySelector('.js-label-error');
 const input_search_desc = document.querySelector('.js_in_search_desc');
-
 
 //Objetos con cada gatito
 const kittenData_1 = {
@@ -80,30 +78,30 @@ function handleClickNewCatForm(event) {
         hideNewCatForm();
     }
 }
+
 //Adicionar nuevo gatito
 function addNewKitten(event) {
     event.preventDefault();
-    const valueDesc = '';
-    const valuePhoto = '';
-    const valueName = '';
-    const valueRace = '';
+    const valueDesc = inputDesc.value;
+    const valuePhoto = inputPhoto.value;
+    const valueName = inputName.value;
     if (valueDesc === "" && valuePhoto === "" && valueName === "") {
         labelMesageError.innerHTML = "Debe rellenar todos los valores";
     } else {
         if (valueDesc !== "" && valuePhoto !== "" && valueName !== "") {
             labelMesageError.innerHTML = "";
         }
+        const newKittenDataObject = {
+            image: valuePhoto,
+            name: valueName,
+            desc: valueDesc,
+        };
+        kittenDataList.push(newKittenDataObject);
+        labelMesageError.innerHTML = 'Mola! Un nuevo gatito en Adalab!';
+        renderKittenList(kittenDataList);
     }
-    const newKittenDataObject = {
-        image: valuePhoto,
-        name: valueName,
-        desc: valueDesc,
-        race: valueRace,
-    };
-    kittenDataList.push(newKittenDataObject);
-    labelMesageError.innerHTML = 'Mola! Un nuevo gatito en Adalab!';
-    renderKittenList(kittenDataList);
 }
+
 //Cancelar la búsqueda de un gatito
 function cancelNewKitten(event) {
     event.preventDefault();
