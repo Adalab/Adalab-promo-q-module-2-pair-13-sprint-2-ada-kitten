@@ -96,11 +96,37 @@ function addNewKitten(event) {
             labelMesageError.innerHTML = "";
         }
         const newKittenDataObject = {
-            image: valuePhoto,
-            name: valueName,
-            desc: valueDesc,
-            race: valueRace
+            url: newURL,
+            name: newName,
+            desc: newDescription,
+            race: newRace,
         };
+
+        // Nueva petición al servidor
+
+        fetch(`https://adalab-api.herokuapp.com/api/kittens/${GITHUB_USER}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(newKittenDataObject),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    kittenDataList.push(newKittenDataObject);
+                    localStorage.setItem("kittenDataList" , JSON.stringify(kittenDataList));
+                    renderKittenList(kittenDataList);
+                    // No terminado
+                    //Completa y/o modifica el código:
+                    //Agrega el nuevo gatito al listado
+                    //Guarda el listado actualizado en el local stoarge
+                    //Visualiza nuevamente el listado de gatitos
+                    //Limpia los valores de cada input
+                } else {
+                    //muestra un mensaje de error.
+                }
+        });
+
+
         kittenDataList.push(newKittenDataObject);
         labelMesageError.innerHTML = 'Mola! Un nuevo gatito en Adalab!';
         renderKittenList(kittenDataList);
@@ -121,7 +147,7 @@ function cancelNewKitten(event) {
 function filterKitten(event) {
     event.preventDefault();
     const descrSearchText = input_search_desc.value;
-    const raceSearchText = input_search_race.value;
+    const raceSearchText = inputRace.value;
     listElement.innerHTML = "";
     const kittenFilterOne = kittenDataList.filter((kitten) => kitten.desc.includes(descrSearchText));
     const kittenFilterTwo = kittenDataList.filter((kitten) => kitten.race.includes(raceSearchText));
@@ -130,18 +156,39 @@ function filterKitten(event) {
 
 // Fetch
 
-fetch(SERVER_URL, {
-    method: 'GET',
-    headers: {'Content-Type': 'application/json'},
-  }).then(response => response.json()).then(data => {
-    console.log(data.results);
-    kittenDataList = data.results;
-    renderKittenList(kittenDataList);
-});
+// fetch(SERVER_URL, {
+//     method: 'GET',
+//     headers: {'Content-Type': 'application/json'},
+//   }).then(response => response.json()).then(data => {
+//     console.log(data.results);
+//     kittenDataList = data.results;
+//     renderKittenList(kittenDataList);
+// });
   //Completa el código;
 
-//Mostrar el litado de gatitos en el HTML
+// Local Storage
+const kittenListStored = JSON.parse(localStorage.getItem('kittensList'));
 
+if (kittenListStored) {
+    //si existe el listado de gatitos en el local storage
+    // vuelve a pintar el listado de gatitos
+    renderKittenList(kittenDataList);
+  } else {
+    //sino existe el listado de gatitos en el local storage
+    //haz la petición al servidor
+    fetch(SERVER_URL, {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'},
+      }).then(response => response.json()).then(data => {
+        console.log(data.results);
+        kittenDataList = data.results;
+        localStorage.setItem("kittenDataList" , JSON.stringify(kittenDataList));
+        renderKittenList(kittenDataList);
+    })
+      .catch((error) => {
+        console.error(error);
+    });
+  }
 
 //Eventos
 linkNewFormElememt.addEventListener("click", handleClickNewCatForm);
