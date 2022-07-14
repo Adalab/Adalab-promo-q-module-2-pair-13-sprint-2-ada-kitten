@@ -16,75 +16,76 @@ const input_search_desc = document.querySelector('.js_in_search_desc');
 const GITHUB_USER = 'MLLuisa';
 const SERVER_URL = `https://adalab-api.herokuapp.com/api/kittens/${GITHUB_USER}`;
 
+const urlKitten1 = "https://ychef.files.bbci.co.uk/976x549/p07ryyyj.jpg";
+const urlKitten2 = "https://media-cldnry.s-nbcnews.com/image/upload/t_nbcnews-fp-1200-630,f_auto,q_auto:best/newscms/2019_39/3021711/190923-cat-pet-stock-cs-1052a.jpg";
+const urlKitten3 = "https://images.emedicinehealth.com/images/article/main_image/cat-scratch-disease.jpg";
+
 //Objetos con cada gatito
-const kittenData_1 = {
-    image: "https://ychef.files.bbci.co.uk/976x549/p07ryyyj.jpg",
-    name: "Anastacio",
-    desc: "Risueño, juguetón, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
-    race: "British Shorthair",
-};
-const kittenData_2 = {
-    image: "https://media-cldnry.s-nbcnews.com/image/upload/t_nbcnews-fp-1200-630,f_auto,q_auto:best/newscms/2019_39/3021711/190923-cat-pet-stock-cs-1052a.jpg",
-    name: "Fiona",
-    desc: "Dormilon, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
-    race: "British Shorthair",
-};
-const kittenData_3 = {
-    image: "https://images.emedicinehealth.com/images/article/main_image/cat-scratch-disease.jpg",
-    name: "Cielo",
-    desc: "Risueño, juguetón, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
-    race: "Europea",
-};
+const kittenData = [{
+        image: urlKitten1,
+        name: "Anastacio",
+        desc: "Risueño, juguetón, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
+        race: "British Shorthair",
+    },
+    {
+        image: urlKitten2,
+        name: "Fiona",
+        desc: "Dormilon, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
+        race: "British Shorthair",
+    },
+    {
+        image: urlKitten3,
+        name: "Cielo",
+        desc: "Risueño, juguetón, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
+        race: "Europea",
+    }
+];
 
-let kittenDataList = [];
-
-//Funciones
-// function renderKitten(kittenData) {
-//     const kitten = `<li class="card">
-//     <article>
-//       <img
-//         class="card_img"
-//         src=${kittenData.image}
-//         alt="gatito"
-//       />
-//       <h3 class="card_title">${kittenData.name}</h3>
-//       <h3 class="card_race">${kittenData.race}</h3>
-//       <p class="card_description">
-//       ${kittenData.desc}
-//       </p>
-//     </article>
-//     </li>`;
-//     return kitten;
-// }
-
-
-function renderKitten(kittenData) {
+function renderKitten(kitten) {
+    // liElement.classList.add("list");
     const liElement = document.createElement("li");
-    const image = document.createElement("img");
-    const name = document.createElement("h3");
-    const race = document.createElement("h2");
-    const desc = document.createElement("p");
-    liElement.appendChild(image);
-    liElement.appendChild(name);
-    liElement.appendChild(race);
-    liElement.appendChild(desc);
-    liElement.classList.add("list");
+    liElement.setAttribute('class', 'card');
 
-    //Nos quedamos por aquí
-    image.setAttribute("src", kittenData.image);
+
+    const image = document.createElement("img");
+    image.setAttribute('class', 'card_img');
+    image.setAttribute('src', kitten.image);
+    image.setAttribute('alt', 'gatito');
     liElement.appendChild(image);
+
+
+    const name = document.createElement("h3");
+    const nameText = document.createTextNode(kitten.name);
+    name.setAttribute('class', 'card_title');
+    name.appendChild(nameText);
+    liElement.appendChild(name);
+
+
+    const race = document.createElement("h3");
+    const raceText = document.createTextNode(kitten.race);
+    race.setAttribute('class', 'card_race');
+    race.appendChild(raceText);
+    liElement.appendChild(race);
+
+    const desc = document.createElement("p");
+    const descText = document.createTextNode(kitten.desc);
+    desc.setAttribute('class', 'card_description');
+    desc.appendChild(descText);
+    liElement.appendChild(desc);
+
+    listElement.appendChild(liElement);
 
     return liElement;
 }
 
 
 
-
+let kittenDataList = [];
 
 function renderKittenList(kittenDataList) {
     listElement.innerHTML = "";
     for (const kittenItem of kittenDataList) {
-        listElement.innerHTML += renderKitten(kittenItem);
+        renderKitten(kittenItem);
     }
 }
 
