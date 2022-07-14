@@ -39,23 +39,47 @@ const kittenData_3 = {
 let kittenDataList = [];
 
 //Funciones
+// function renderKitten(kittenData) {
+//     const kitten = `<li class="card">
+//     <article>
+//       <img
+//         class="card_img"
+//         src=${kittenData.image}
+//         alt="gatito"
+//       />
+//       <h3 class="card_title">${kittenData.name}</h3>
+//       <h3 class="card_race">${kittenData.race}</h3>
+//       <p class="card_description">
+//       ${kittenData.desc}
+//       </p>
+//     </article>
+//     </li>`;
+//     return kitten;
+// }
+
+
 function renderKitten(kittenData) {
-    const kitten = `<li class="card">
-    <article>
-      <img
-        class="card_img"
-        src=${kittenData.url}
-        alt="gatito"
-      />
-      <h3 class="card_title">${kittenData.name}</h3>
-      <h3 class="card_race">${kittenData.race}</h3>
-      <p class="card_description">
-      ${kittenData.desc}
-      </p>
-    </article>
-    </li>`;
-    return kitten;
+    const liElement = document.createElement("li");
+    const image = document.createElement("img");
+    const name = document.createElement("h3");
+    const race = document.createElement("h2");
+    const desc = document.createElement("p");
+    liElement.appendChild(image);
+    liElement.appendChild(name);
+    liElement.appendChild(race);
+    liElement.appendChild(desc);
+    liElement.classList.add("list");
+
+    //Nos quedamos por aquí
+    image.setAttribute("src", kittenData.image);
+    liElement.appendChild(image);
+
+    return liElement;
 }
+
+
+
+
 
 function renderKittenList(kittenDataList) {
     listElement.innerHTML = "";
@@ -105,15 +129,17 @@ function addNewKitten(event) {
         // Nueva petición al servidor
 
         fetch(`https://adalab-api.herokuapp.com/api/kittens/${GITHUB_USER}`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(newKittenDataObject),
-        })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newKittenDataObject),
+            })
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
                     kittenDataList.push(newKittenDataObject);
-                    localStorage.setItem("kittenDataList" , JSON.stringify(kittenDataList));
+                    localStorage.setItem("kittenDataList", JSON.stringify(kittenDataList));
                     renderKittenList(kittenDataList);
                     // No terminado
                     //Completa y/o modifica el código:
@@ -124,7 +150,7 @@ function addNewKitten(event) {
                 } else {
                     //muestra un mensaje de error.
                 }
-        });
+            });
 
 
         kittenDataList.push(newKittenDataObject);
@@ -164,7 +190,7 @@ function filterKitten(event) {
 //     kittenDataList = data.results;
 //     renderKittenList(kittenDataList);
 // });
-  //Completa el código;
+//Completa el código;
 
 // Local Storage
 const kittenListStored = JSON.parse(localStorage.getItem('kittensList'));
@@ -173,22 +199,24 @@ if (kittenListStored) {
     //si existe el listado de gatitos en el local storage
     // vuelve a pintar el listado de gatitos
     renderKittenList(kittenDataList);
-  } else {
+} else {
     //sino existe el listado de gatitos en el local storage
     //haz la petición al servidor
     fetch(SERVER_URL, {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'},
-      }).then(response => response.json()).then(data => {
-        console.log(data.results);
-        kittenDataList = data.results;
-        localStorage.setItem("kittenDataList" , JSON.stringify(kittenDataList));
-        renderKittenList(kittenDataList);
-    })
-      .catch((error) => {
-        console.error(error);
-    });
-  }
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(response => response.json()).then(data => {
+            console.log(data.results);
+            kittenDataList = data.results;
+            localStorage.setItem("kittenDataList", JSON.stringify(kittenDataList));
+            renderKittenList(kittenDataList);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
 
 //Eventos
 linkNewFormElememt.addEventListener("click", handleClickNewCatForm);
