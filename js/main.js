@@ -20,32 +20,10 @@ const urlKitten1 = "https://ychef.files.bbci.co.uk/976x549/p07ryyyj.jpg";
 const urlKitten2 = "https://media-cldnry.s-nbcnews.com/image/upload/t_nbcnews-fp-1200-630,f_auto,q_auto:best/newscms/2019_39/3021711/190923-cat-pet-stock-cs-1052a.jpg";
 const urlKitten3 = "https://images.emedicinehealth.com/images/article/main_image/cat-scratch-disease.jpg";
 
-//Objetos con cada gatito
-const kittenData = [{
-        image: urlKitten1,
-        name: "Anastacio",
-        desc: "Risueño, juguetón, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
-        race: "British Shorthair",
-    },
-    {
-        image: urlKitten2,
-        name: "Fiona",
-        desc: "Dormilon, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
-        race: "British Shorthair",
-    },
-    {
-        image: urlKitten3,
-        name: "Cielo",
-        desc: "Risueño, juguetón, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
-        race: "Europea",
-    }
-];
-
 function renderKitten(kitten) {
-    // liElement.classList.add("list");
+
     const liElement = document.createElement("li");
     liElement.setAttribute('class', 'card');
-
 
     const image = document.createElement("img");
     image.setAttribute('class', 'card_img');
@@ -53,13 +31,11 @@ function renderKitten(kitten) {
     image.setAttribute('alt', 'gatito');
     liElement.appendChild(image);
 
-
     const name = document.createElement("h3");
     const nameText = document.createTextNode(kitten.name);
     name.setAttribute('class', 'card_title');
     name.appendChild(nameText);
     liElement.appendChild(name);
-
 
     const race = document.createElement("h3");
     const raceText = document.createTextNode(kitten.race);
@@ -77,8 +53,6 @@ function renderKitten(kitten) {
 
     return liElement;
 }
-
-
 
 let kittenDataList = [];
 
@@ -121,10 +95,10 @@ function addNewKitten(event) {
             labelMesageError.innerHTML = "";
         }
         const newKittenDataObject = {
-            url: newURL,
-            name: newName,
-            desc: newDescription,
-            race: newRace,
+            image: valuePhoto,
+            name: valueName,
+            desc: valueDesc,
+            race: valueRace,
         };
 
         // Nueva petición al servidor
@@ -142,23 +116,11 @@ function addNewKitten(event) {
                     kittenDataList.push(newKittenDataObject);
                     localStorage.setItem("kittenDataList", JSON.stringify(kittenDataList));
                     renderKittenList(kittenDataList);
-                    // No terminado
-                    //Completa y/o modifica el código:
-                    //Agrega el nuevo gatito al listado
-                    //Guarda el listado actualizado en el local stoarge
-                    //Visualiza nuevamente el listado de gatitos
-                    //Limpia los valores de cada input
-                } else {
-                    //muestra un mensaje de error.
+                    labelMesageError.innerHTML = 'Mola! Un nuevo gatito en Adalab!';
                 }
             });
-
-
-        kittenDataList.push(newKittenDataObject);
-        labelMesageError.innerHTML = 'Mola! Un nuevo gatito en Adalab!';
-        renderKittenList(kittenDataList);
     }
-}
+};
 
 //Cancelar la búsqueda de un gatito
 function cancelNewKitten(event) {
@@ -181,28 +143,14 @@ function filterKitten(event) {
     renderKittenList(kittenDataList);
 }
 
-// Fetch
-
-// fetch(SERVER_URL, {
-//     method: 'GET',
-//     headers: {'Content-Type': 'application/json'},
-//   }).then(response => response.json()).then(data => {
-//     console.log(data.results);
-//     kittenDataList = data.results;
-//     renderKittenList(kittenDataList);
-// });
-//Completa el código;
-
 // Local Storage
 const kittenListStored = JSON.parse(localStorage.getItem('kittensList'));
 
 if (kittenListStored) {
-    //si existe el listado de gatitos en el local storage
-    // vuelve a pintar el listado de gatitos
+
     renderKittenList(kittenDataList);
 } else {
-    //sino existe el listado de gatitos en el local storage
-    //haz la petición al servidor
+
     fetch(SERVER_URL, {
             method: 'GET',
             headers: {
